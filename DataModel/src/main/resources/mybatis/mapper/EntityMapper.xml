@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eardh.mapper.EntityMapper">
+
+    <select id="queryAllOrPageByProjectId" resultType="com.eardh.model.Entity">
+        select *,name as entityName, last_modify_time as lastModTime from tb_entity where project_id = #{projectId}
+    </select>
+
+</mapper>

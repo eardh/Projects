@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eardh.mapper.FieldMapper">
+    
+    <resultMap id="field_and_attribute" type="com.eardh.model.Field">
+        <id column="id" property="id"/>
+        <result column="entity_id" property="entityId"/>
+        <result column="field_name" property="fieldName"/>
+        <result column="description" property="description"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <collection property="cdmAttribute" columnPrefix="cdm_" ofType="com.eardh.model.CdmAttribute">
+            <id column="field_id" property="fieldId"/>
+            <result column="data_type" property="dataType"/>
+            <result column="data_length" property="dataLength"/>
+        </collection>
+        <collection property="ldmAttribute" columnPrefix="ldm_" ofType="com.eardh.model.LdmAttribute">
+            <id column="field_id" property="fieldId"/>
+            <result column="foreign_key" property="isForeignKey"/>
+            <result column="is_search" property="isSearch"/>
+            <result column="is_sorted" property="isSorted"/>
+            <result column="is_unique" property="isUnique"/>
+            <result column="search_type" property="searchType"/>
+        </collection>
+        <collection property="pdmAttribute" columnPrefix="pdm_" ofType="com.eardh.model.PdmAttribute">
+            <id column="field_id" property="fieldId"/>
+            <result column="code" property="codeName"/>
+            <result column="data_type" property="dataType"/>
+            <result column="data_length" property="dataLength"/>
+            <result column="data_precision" property="dataPrecision"/>
+            <result column="primary_key" property="primaryKey"/>
+            <result column="foreign_key" property="isForeignKey"/>
+            <result column="is_unique" property="isUnique"/>
+            <result column="not_null" property="notNull"/>
+            <result column="default_value" property="defaultValue"/>
+        </collection>
+        <collection property="oomAttribute" columnPrefix="oom_" ofType="com.eardh.model.OomAttribute">
+            <id column="field_id" property="fieldId"/>
+            <result column="add_req" property="addReq"/>
+            <result column="update_req" property="updateReq"/>
+            <result column="delete_req" property="deleteReq"/>
+            <result column="query_req" property="queryReq"/>
+            <result column="is_enum" property="isEnum"/>
+            <result column="asso_progress" property="assoProgress"/>
+            <result column="progress_req" property="progressReq"/>
+        </collection>
+    </resultMap>
+
+    <select id="getAllOrPageByEntityId" resultType="com.eardh.model.Field">
+        select * from tb_field where entity_id = #{entityId}
+    </select>
+    
+    <select id="getFieldWithAttributeByEntityId" resultMap="field_and_attribute">
+        SELECT a.id, a.entity_id, a.field_name, a.description, a.remark, a.create_time,
+               b1.field_id as cdm_field_id, b1.data_type as cdm_data_type, b1.data_length as cdm_data_length,
+               b2.field_id as ldm_field_id, b2.foreign_key as ldm_foreign_key, b2.is_search as ldm_is_search, b2.is_sorted as ldm_is_sorted, b2.is_unique as ldm_is_unique, b2.search_type as ldm_search_type,
+               b3.field_id as pdm_field_id, b3.code as pdm_code, b3.data_type as pdm_data_type, b3.data_length as pdm_data_length, b3.data_precision as pdm_data_precision, b3.primary_key as pdm_primary_key, b3.foreign_key as pdm_foreign_key, b3.is_unique as pdm_is_unique, b3.not_null as pdm_not_null, b3.default_value as pdm_default_value,
+               b4.field_id as oom_field_id, b4.add_req as oom_add_req, b4.update_req as oom_update_req, b4.delete_req as oom_delete_req, b4.query_req as oom_query_req, b4.is_enum as oom_is_enum, b4.asso_progress as oom_asso_progress, b4.progress_req as oom_progress_req
+        FROM tb_field a, tb_cdm_attribute b1, tb_ldm_attribute b2, tb_pdm_attribute b3, tb_oom_attribute b4
+        where a.entity_id = #{entityId} and  a.id = b1.field_id and a.id = b2.field_id and a.id = b3.field_id and a.id = b4.field_id
+    </select>
+</mapper>

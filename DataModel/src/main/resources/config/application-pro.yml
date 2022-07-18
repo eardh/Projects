@@ -1,0 +1,64 @@
+current:
+  userId: 'eardh'
+
+server:
+  port: 8080
+
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://121.4.32.77:3306/data_model
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 123456
+
+      aop-patterns: com.eardh.*  #监控SpringBean
+      filters: stat,wall     # 底层开启功能，stat（sql监控），wall（防火墙）
+      stat-view-servlet: # 配置监控页功能
+        enabled: true
+        login-username: eardh
+        login-password: 123456
+        resetEnable: false
+      web-stat-filter: # 监控web
+        enabled: true
+        urlPattern: /*
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+      filter:
+        stat: # 对上面filters里面的stat的详细配置
+          slow-sql-millis: 1000
+          logSlowSql: true
+          enabled: true
+        wall:
+          enabled: true
+          config:
+            drop-table-allow: false
+
+# 加入日志功能
+mybatis-plus:
+  configuration:
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  # 设置MyBatis-Plus的全局配置
+  global-config:
+    db-config:
+      # 设置实体类所对应的表的统一前缀
+      table-prefix: tb_
+      # 设置统一的主键生成策略
+      id-type: assign_id
+    banner: off
+  # 配置类型别名所对应的包
+  type-aliases-package: com.eardh.model
+  mapper-locations: "classpath*:/mybatis/mapper/**/*.xml"
+
+logging:
+  level:
+    com.eardh: info
+  logback:
+    rollingpolicy:
+      max-file-size: 10KB
+      file-name-pattern: log/server-%d{yyyy-MM-dd}.%i.log
+      max-history: 20
+      clean-history-on-start: on
+      total-size-cap: 10
+  file:
+    name: log/server.log

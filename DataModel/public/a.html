@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://cdn.bootcss.com/github-markdown-css/2.10.0/github-markdown.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./vue/markdown.css">
+    <link rel="stylesheet" href="./vue/vue.css">
+</head>
+<body>
+
+<div id="content" class="markdown-body markdown" style="width:96%;margin-bottom:50px"></div>
+
+<script>
+    document.getElementById('content').innerHTML =
+        // marked相关配置
+        marked.parse(`学生进度更新接口
+--------
+
+### 基本信息
+
+- **接口URL：**\`http://localhost:port/student/schedule\`
+- **请求方式：**\`PUT\`
+- **Content-Type：**\`application/json\`
+
+
+
+### 请求参数
+
+| 参数名 | 参数类型 | 是否必填 |   参数描述   |
+| :----: | :------: | :------: | :----------: |
+|  stId  |  BIGINT  |    是    | 唯一标识学生 |
+
+> sdf
+> ffgd
+
+### 响应参数
+
+| 参数名  | 参数类型 | 参数描述 |
+| :-----: | :------: | :------: |
+|  code   | Integer  |  业务码  |
+| message |  String  | 提示消息 |
+|  data   |  Object  | 响应数据 |`);
+</script>
+
+</body>
+</html>
